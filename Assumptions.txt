@@ -1,0 +1,7 @@
+﻿A valid email address is one that has a valid string for an email address. It was assumed that email verification did not included sending a request to the email address to be added to the newletter database. 
+
+For an email address already signed up and stored in the database, it was assumned that any email address already entered would not update any stored information. Ie same email but different reason for sign up and/or  “How they heard about us” would not be updated.
+
+Since "How they heard about us" is limited to three options it was assumed that a check had to be done in the backed end to ensure limit was provided to both the form frontend and database.
+
+For the "Other" option for the "How they heard about us" form input, it was assumed that no text input for other was needed. Only the option select value had to be collected.

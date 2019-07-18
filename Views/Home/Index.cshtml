@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Newsletter Sign-Up Form";
+}
+
+<div class="row">
+    <div class="offset-5">
+        <h2>Newsletter Sign-Up</h2>
+    </div>
+</div>
+<div class="offset-4">
+    <!--Notifcation area for sign up form submission-->
+    <div class="row">
+        <div id="formAlert" role="alert" class="col-md-7" aria-atomic="true">
+            <p id="formAlertText" class="mb-1"></p>
+        </div>
+    </div>
+    <!--Form of sign up to newsletter, prevented from redirecting-->
+    <form id="newsLetterSignupForm" class="form-horizontal" role="form" aria-label="News Letter Signup" action="javascript:void(0);">
+        <div class="form-group row">
+            <label for="ID" class="col-sm-3 control-label">Email Address</label>
+            <div class="col-sm-4">
+                <input type="email" id="ID" name="ID" placeholder="Enter Email" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 control-label" for="hearAboutSource">Where did you hear about us</label>
+            <div class="col-sm-4">
+                <select id="hearAboutSource" name="hearAboutSource" class="form-control" required>
+                    <option value="" disabled selected>Select option</option>
+                    <option value="Advert">Advert</option>
+                    <option value="Word of Mouth">Word of Mouth</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-3 control-label" for="signupReason">Reason for sign up</label>
+            <div class="col-sm-4">
+                <textarea id="signupReason" name="signupReason" rows="1" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="offset-sm-2 col-sm-2">
+                <button type="submit" class="btn btn-block btn-info">Sign Up</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--Load script at bottom of page so jquery is loaded first-->
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var formAlert = document.getElementById("formAlert");
+            var formAlertText = document.getElementById("formAlertText");
+            $("#newsLetterSignupForm").submit(function (e) {
+                formAlert.classList.remove("alert");
+                         formAlert.classList.remove("alert-danger");
+                         formAlert.classList.remove("alert-success");
+                         formAlertText.innerText = "";
+                 $.ajax({
+                    url: "@Url.Action("newsletterSignUp")",
+                    type: "POST",
+                    data: $('#newsLetterSignupForm').serialize(),
+                     error: function (response) {                                           
+                         formAlert.classList.add("alert");
+                         formAlert.classList.add("alert-danger");
+                         formAlertText.innerText = "Error in Posting form to System";},
+                     success: function (response) {
+                         if (response.status === "Error") {
+                             formAlert.classList.add("alert");
+                             formAlert.classList.add("alert-danger");
+
+                         } else {
+                             formAlert.classList.add("alert");
+                             formAlert.classList.add("alert-success");
+                         }
+                         formAlertText.innerText = response.message;
+                    }
+                });
+            });
+        });
+    </script>
+}
